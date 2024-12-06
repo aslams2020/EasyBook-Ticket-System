@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful</title>
+    <style>
+        .container {
+    max-width: 600px;
+    margin: 50px auto;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    color: #934caf;
+    font-size: 2.5em;
+}
+
+p {
+    font-size: 1.2em;
+    color: #555;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #7b00ff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.btn:hover {
+    background-color: #5c00b3;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Payment Successful!</h1>
+        </header>
+        <p>Thank you for booking with us!</p>
+        <p>Your payment via <strong>{{ payment_method }}</strong> has been successfully processed.</p>
+        <p>Total Amount Paid: <strong>${{ total_amount }}</strong></p>
+        <a href="{{ url_for('home') }}" class="btn">Return to Homepage</a>
+    </div>
+</body>
+</html>

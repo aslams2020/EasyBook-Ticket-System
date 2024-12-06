@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Tickets</title>
+    <style>
+       body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        header {
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            background-color: #350149e5;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .ticket-form {
+            background-color: #fff;
+            padding: 40px;
+            margin: 30px auto;
+            max-width: 500px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            font-size: 18px;
+            color: #350149e5;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            font-size: 16px;
+            padding: 10px;
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        .book-now-btn {
+            background-color: #5b0089;
+            padding: 14px 30px;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            text-transform: uppercase;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+
+        .book-now-btn:hover {
+            background-color: #7a00b7;
+            transform: scale(1.05);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #350149e5;
+            font-size: 16px;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 5px;
+            background-color: #2e2e2e;
+            color: #fff;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            font-size: 15px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Book Tickets for {{ movie[1] }}</h1>
+        </header>
+
+        <div class="ticket-form">
+            <form method="POST">
+                <div class="input-group">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" name="quantity" id="quantity" min="1" max="{{ movie[3] }}" required>
+                </div>
+                <button type="submit" class="book-now-btn">Book Now</button>
+            </form>
+
+            <p><a href="/movies" class="back-link">Back to Movies</a></p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Theater Booking System | <a href="/terms">Terms & Conditions</a> | <a href="/privacy">Privacy Policy</a></p>
+    </footer>
+</body>
+</html>

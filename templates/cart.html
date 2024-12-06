@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Theater Ticket Booking</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <style>
+
+/* Cart Page */
+.cart-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.cart-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.cart-container th,
+.cart-container td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+.cart-container th {
+    background-color: #40019a;
+    color: white;
+}
+
+.cart-container td {
+    background-color: #f9f9f9;
+}
+
+.cart-container button {
+    background-color: #40019a;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cart-container button:hover {
+    background-color: #5e33b1;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Theater Ticket Booking</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/movies">Movies</a>
+            <a href="/logout">Logout</a>
+        </nav>
+    </header>
+    <main>
+        <div class="checkout-container">
+            <h2>Booking Confirmed</h2>
+            <p>Thank you for booking your tickets! Here are your booking details:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Movie</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking['movie_name'] }}</td>
+                        <td>{{ booking['date'] }}</td>
+                        <td>{{ booking['time'] }}</td>
+                        <td>{{ booking['quantity'] }}</td>
+                        <td>${{ booking['total_price'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p>Total Amount Paid: ${{ grand_total }}</p>
+            <a href="/movies">Back to Movies</a>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Theater Booking System</p>
+    </footer>
+</body>
+</html>

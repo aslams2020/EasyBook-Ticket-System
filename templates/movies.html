@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Movies</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header{
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            background-color: #350149e5;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 41px;
+        }
+
+        nav {
+            margin-top: 15px;
+        }
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 20px;
+    font-weight: bold;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+nav a:hover{
+    color: #f9e003;
+}
+
+h3, p {
+            color: #4a1163;
+            font-size: 16px;
+        }
+h3 {
+    color: #4a1163;
+}
+.logout-btn {
+    padding: 7px 20px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+    color: #f8f8f8; /* dark purple on hover */
+}
+
+.movies-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.movie-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.movie-card h3 {
+    color: #6d0895;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.movie-card p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.movie-card a.book-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #1050be; /* purple background */
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.movie-card a.book-btn:hover {
+    background-color: #022258; /* dark purple on hover */
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .movies-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Footer */
+footer {
+            text-align: center;
+            padding: 5px;
+            background-color: #2e2e2e;
+            color: #fff;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            font-size: 15px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+        footer .foot-p {
+            color:white;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Available Movies</h1>
+        <nav>
+            <a href="/" class="logout-btn">Home</a>
+            <a href="/checkout" class="logout-btn">Checkout</a>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="movies-list">
+            {% for movie in movies %}
+                <div class="movie-card">
+                    <h3>{{ movie[1] }}</h3>
+                    <p><strong>Price:</strong> Rs. {{ movie[2] }}</p>
+                    <p><strong>Available Seats:</strong> {{ movie[3] }}</p>
+                    <p><strong>Date:</strong> {{ movie[4] }} | <strong>Time:</strong> {{ movie[5] }}</p>
+                    <a href="/book/{{ movie[0] }}" class="book-btn">Book Tickets</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <footer>
+        <p class="foot-p">&copy; 2024 Theater Booking System | <a href="/terms">Terms & Conditions</a> | <a href="/privacy">Privacy Policy</a></p>
+        
+    </footer>
+</body>
+</html>

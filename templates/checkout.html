@@ -1,0 +1,315 @@
+<!-- checkout.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Bookings</title>
+    <style>
+        
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    width: 100%;
+    color: white;
+    background-color: #4d1164;
+}
+
+h1 {
+    font-size: 2rem;
+    color: #ffffff;
+}
+
+.bookings-table {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #4d1164;
+    color: white;
+}
+
+table td {
+    font-size: 1.1rem;
+}
+
+table tr:hover {
+    background-color: #f9f9f9;
+}
+
+.remove-btn {
+    padding: 8px 15px;
+    background-color: #f05e4e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.remove-btn:hover {
+    background-color: #952518;
+}
+
+h2 {
+    font-size: 1.5rem;
+    color: #4d1164;
+    margin-top: 20px;
+}
+
+.no-bookings {
+    font-size: 1.2rem;
+    text-align: center;
+    color: #555;
+    margin-top: 20px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7; 
+    color: #333;
+    line-height: 1.6;
+}
+
+.payment-section {
+    max-width: 600px;
+    margin: 30px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+
+.payment-section h2 {
+    color: #4d1164;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.payment-section label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.payment-method-select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #4d1164; 
+    border-radius: 4px;
+    font-size: 16px;
+    color: #555;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+    transition: border-color 0.3s;
+}
+
+.payment-method-select:focus {
+    outline: none;
+    border-color: #4d1164;
+}
+
+
+.payment-method-btn {
+    background-color: #1050be; 
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+.payment-method-btn:hover {
+    background-color: #002d7c;
+}
+
+@media (max-width: 768px) {
+    .payment-section {
+        padding: 15px;
+    }
+
+    .payment-submit {
+        font-size: 16px;
+    }
+}
+
+.back-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #1050be;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.back-btn:hover {
+    background-color: #07327c;
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    table th, table td {
+        font-size: 1rem;
+        padding: 8px;
+    }
+
+    .remove-btn, .back-btn {
+        font-size: 1rem;
+        padding: 8px 16px;
+    }
+}
+
+    </style>
+    <style>
+        .modal {
+        display: none; 
+        position: fixed; 
+        z-index: 1; 
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto; 
+        background-color: rgb(0, 0, 0); 
+        background-color: rgba(0, 0, 0, 0.4); 
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    #ok-button {
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Your Bookings</h1>
+    </header>
+    <div class="container">
+        <a href="{{ url_for('movies') }}" class="back-btn">Add more Movies + </a>
+        {% if bookings %}
+            <div class="bookings-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Movie Name</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                            <tr>
+                                <td>{{ booking[2] }}</td> <!-- Movie Name -->
+                                <td>{{ booking[0] }}</td> <!-- Quantity -->
+                                <td>Rs. {{ booking[1] }}</td> <!-- Total -->
+                                <td>
+                                    <!-- Decrement Button -->
+                                    <form action="{{ url_for('decrement_quantity', booking_id=booking[3]) }}" method="POST">
+                                        <button type="submit" class="remove-btn">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <h2>Total Amount: Rs. {{ total_amount }}</h2>
+            </div>
+
+            <!-- Payment Section -->
+            <div class="payment-section">
+                <h2>Payment</h2>
+                <form id="payment-form" action="{{ url_for('checkout') }}" method="POST">
+                    <label for="payment_method">Select Payment Method:</label>
+                    <select name="payment_method" id="payment_method" class="payment-method-select" required>
+                        <option value="" disabled selected>Select Here</option>
+                        <option value="Debit Card">Debit Card</option>
+                        <option value="Credit Card">Credit Card</option>
+                        <option value="UPI">UPI</option>
+                        <option value="PayPal">PayPal</option>
+                    </select>
+                    <button type="submit" class="payment-method-btn">Proceed to Pay</button>
+                </form>
+            </div>
+          
+        {% else %}
+            <!-- <p class="no-bookings">You have no bookings yet.</p> -->
+        {% endif %}
+    </div>
+
+
+    <div class="container">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert">
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+    
+    </div>
+
+</body>
+</html>

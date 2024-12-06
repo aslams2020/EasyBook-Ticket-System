@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f2f2f2; /* Matching the background color from login */
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* Main Content for Register */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .register-box {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .register-box h1 {
+            font-size: 32px;
+            color: #350149e5; /* Matching the heading color from login */
+            font-family: 'Roboto', sans-serif;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            font-weight: bold;
+            font-size: 14px;
+            color: #350149e5; /* Matching the label color from login */
+        }
+
+        .input-group input {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+
+        .input-group input:focus {
+            border-color: #350149e5; /* Matching focus color from login */
+            outline: none;
+        }
+
+        /* Register Button */
+        .register-btn {
+            background-color: #5b0089;
+            padding: 12px 30px;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        .register-btn:hover {
+            background-color: #7a00b7;
+            transform: scale(1.03);
+        }
+
+        /* Login Link */
+        .login-link {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .login-link a {
+            color: #350149e5;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 5px;
+            background-color: #2e2e2e;
+            color: #fff;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            font-size: 15px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="register-box">
+            <h1>Register</h1>
+            <form method="POST">
+                <div class="input-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="register-btn">Register</button>
+            </form>
+            <p class="login-link">
+                <a href="/login">Already have an account? Login here</a>
+            </p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Theater Booking System | <a href="/terms">Terms & Conditions</a> | <a href="/privacy">Privacy Policy</a></p>
+    </footer>
+</body>
+</html>
