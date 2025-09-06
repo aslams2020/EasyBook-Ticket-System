@@ -1,150 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Theater Ticket Booking</title>
-    <style>
-        /* General Styles */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            color: #fff;
-        }
+{% extends "base.html" %}
 
-        header {
-            color: #fff;
-            padding: 15px;
-            text-align: center;
-            background-color: #350149e5;
-        }
+{% block content %}
+<div class="hero-section text-center">
+    <h1 class="display-4 fw-bold">Welcome to EasyBook</h1>
+    <p class="lead">Book your movie tickets quickly and easily</p>
+    <a href="{{ url_for('movies') }}" class="btn btn-primary btn-lg">Browse Movies</a>
+    <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg">Login</a>
+</div>
 
-        header h1 {
-            margin: 0;
-            font-size: 41px;
-        }
+<h2 class="mb-4 h2-hero">Featured Movies</h2>
 
-        nav {
-            margin-top: 15px;
-        }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 20px;
-            font-weight: bold;
-            font-size: 16px;
-            text-transform: uppercase;
-        }
-
-        nav a:hover {
-            color: #f9e003;
-        }
-
-        /* Main Content */
-        main {
-            padding: 60px 20px;
-            text-align: center;
-        }
-
-        .welcome {
-            background-color: rgb(255, 255, 255);
-            border-radius: 12px;
-            padding: 40px 20px;
-            max-width: 700px;
-            margin: 0 auto;
-            /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); */
-        }
-
-        .welcome h2 {
-            font-size: 32px;
-            margin-bottom: 15px;
-            font-family: 'Roboto', sans-serif;
-            color:black;
-            text-transform: uppercase;
-        }
-
-        .welcome p {
-            font-size: 18px;
-            margin-bottom: 30px;
-            color: black;
-        }
-        .welcome .main-para {
-            color:rgb(131, 0, 146);
-            font-weight: bold;
-            font-size: 22px;
-        }
-
-        /* Animated Buttons */
-        .cta-button {
-            background-color: #5b0089;
-            padding: 12px 30px;
-            color: white;
-            text-transform: uppercase;
-            font-weight: bold;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 0px 10px;
-            transition: 0.3s;
-        }
-
-        .cta-button:hover {
-            background-color: #7a00b7;
-            transform: scale(1.03);
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 5px;
-            background-color: #2e2e2e;
-            color: #fff;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-            font-size: 15px;
-        }
-
-        footer a {
-            color: white;
-            text-decoration: none;
-            margin-left: 5px;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>EasyBook Tickets</h1>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/login">Login</a>
-            <a href="/register">Register</a>
-            <a href="/checkout">Checkout</a>
-            <a href="/logout" class="logout-btn">Logout</a>
-        </nav>
-    </header>
-
-    <main>
-        <div class="welcome">
-            <h2>Welcome to EasyBook Tickets</h2>
-            <p class="main-para">A Theater Ticket Booking Management System! </p>
-            <p>Get ready to enjoy the best cinematic experience. Book your tickets easily!</p>
-            <button class="cta-button" onclick="window.location.href='/login'">Login Now</button>
-            <button class="cta-button" onclick="window.location.href='/register'">Register Here</button>
+<div class="row">
+    {% for movie in movies %}
+    <div class="col-md-3 mb-4">
+        <div class="card movie-card h-100">
+            <img src="{{ movie.poster_url }}" class="card-img-top" alt="{{ movie.title }}" style="height: 300px; object-fit: cover;">
+            <div class="card-body">
+                <h5 class="card-title">{{ movie.title }}</h5>
+                <p class="card-text">{{ movie.genre }}</p>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="btn btn-sm btn-primary">View Showtimes</a>
+            </div>
         </div>
-    </main>
+    </div>
+    {% endfor %}
+</div>
 
-    <footer>
-        <p>&copy; 2024 Theater Booking System | <a href="/terms">Terms & Conditions</a> | <a href="/privacy">Privacy Policy</a></p>
-        
-    </footer>
-
-</body>
-</html>
+<div class="text-center mt-4">
+    <a href="{{ url_for('movies') }}" class="btn btn-outline-primary">View All Movies</a>
+</div>
+{% endblock %}
