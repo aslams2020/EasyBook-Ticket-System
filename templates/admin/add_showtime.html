@@ -1,0 +1,58 @@
+<!-- templates/admin/add_showtime.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header h2-hero">
+                <h3>Add New Showtime</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="movie_id" class="form-label">Movie</label>
+                        <select class="form-select" id="movie_id" name="movie_id" required>
+                            <option value="">Select a Movie</option>
+                            {% for movie in movies %}
+                            <option value="{{ movie.id }}">{{ movie.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="theater_name" class="form-label">Theater Name</label>
+                        <input type="text" class="form-control" id="theater_name" name="theater_name" required>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="showtime" class="form-label">Showtime</label>
+                                <input type="datetime-local" class="form-control" id="showtime" name="showtime" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="available_seats" class="form-label">Available Seats</label>
+                                <input type="number" class="form-control" id="available_seats" name="available_seats" min="1" value="100" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="price" class="form-label">Price ($)</label>
+                                <input type="number" class="form-control" id="price" name="price" min="0" step="0.01" value="12.50" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('admin_showtimes') }}" class="btn btn-secondary me-md-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Add Showtime</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
