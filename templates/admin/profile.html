@@ -1,0 +1,210 @@
+<!-- templates/admin/profile.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h2 text-primary">Admin Profile</h1>
+            <p class="text-muted mb-0">Administrator Account - System Overview</p>
+        </div>
+        <div>
+            <span class="badge bg-danger fs-6">Administrator</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Admin Info -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center p-4">
+                    <!-- Admin Avatar -->
+                    <div class="avatar-container mb-3">
+                        <div class="avatar-circle bg-danger text-white">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                    </div>
+
+                    <!-- Admin Info -->
+                    <h4 class="mb-1">{{ user.username }}</h4>
+                    <p class="text-muted mb-3">{{ user.email }}</p>
+
+                    <!-- Admin Badge -->
+                    <div class="mb-4">
+                        <span class="badge bg-danger fs-6">
+                            <i class="bi bi-shield-check me-1"></i>System Administrator
+                        </span>
+                    </div>
+
+                    <!-- Account Details -->
+                    <div class="account-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Member Since:</span>
+                            <span class="detail-value">{{ user.created_at[:10] }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">User ID:</span>
+                            <span class="detail-value">#{{ user.id }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Overview -->
+        <div class="col-lg-8">
+            <!-- Quick Stats -->
+            <div class="row mb-4">
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Total Movies</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_movies }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="bi bi-film text-gray-300" style="font-size: 2rem;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Total Bookings</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_bookings }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="bi bi-ticket-perforated text-gray-300" style="font-size: 2rem;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Total Revenue</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">${{ "%.2f"|format(total_revenue)
+                                        }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="bi bi-currency-dollar text-gray-300" style="font-size: 2rem;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- templates/admin/profile.html - Update the users section -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        Regular Users</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_users }}</div>
+                                    <div class="mt-1 text-xs text-muted">
+                                        <small>{{ total_admins }} admin users</small>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="bi bi-people text-gray-300" style="font-size: 2rem;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-transparent">
+                    <h5 class="mb-0"><i class="bi bi-lightning me-2"></i>Quick Admin Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <a href="{{ url_for('admin_movies') }}" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-film me-2"></i>Manage Movies
+                            </a>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <a href="{{ url_for('admin_showtimes') }}" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-clock me-2"></i>Manage Showtimes
+                            </a>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <a href="{{ url_for('admin_bookings') }}" class="btn btn-outline-info w-100">
+                                <i class="bi bi-list-check me-2"></i>View Bookings
+                            </a>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <a href="{{ url_for('admin_users') }}" class="btn btn-outline-info w-100">
+                                <i class="bi bi-people me-2"></i>Manage Users
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+ 
+    .container-fluid {
+        /* color: white; */
+    }
+    .avatar-circle {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        margin: 0 auto;
+        background: linear-gradient(135deg, #dc3545 0%, #a71d2a 100%);
+    }
+
+    .detail-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #f1f3f4;
+    }
+
+    .detail-item:last-child {
+        border-bottom: none;
+    }
+
+    .detail-label {
+        font-weight: 500;
+        color: #6c757d;
+    }
+
+    .detail-value {
+        font-weight: 600;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+    }
+</style>
+{% endblock %}
