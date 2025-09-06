@@ -1,137 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Tickets</title>
-    <style>
-       body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2f2f2;
-            color: #333;
-        }
+<!-- templates/book_ticket.html -->
+{% extends "base.html" %}
 
-        header {
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-            background-color: #350149e5;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 32px;
-        }
-
-        .ticket-form {
-            background-color: #fff;
-            padding: 40px;
-            margin: 30px auto;
-            max-width: 500px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
-            font-size: 18px;
-            color: #350149e5;
-            font-weight: bold;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .input-group input {
-            font-size: 16px;
-            padding: 10px;
-            width: 100%;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            margin-top: 5px;
-            box-sizing: border-box;
-        }
-
-        .book-now-btn {
-            background-color: #5b0089;
-            padding: 14px 30px;
-            color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 18px;
-            text-transform: uppercase;
-            transition: 0.3s;
-            margin-top: 20px;
-        }
-
-        .book-now-btn:hover {
-            background-color: #7a00b7;
-            transform: scale(1.05);
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            color: #350149e5;
-            font-size: 16px;
-            text-decoration: none;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 5px;
-            background-color: #2e2e2e;
-            color: #fff;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-            font-size: 15px;
-        }
-
-        footer a {
-            color: white;
-            text-decoration: none;
-            margin-left: 5px;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>Book Tickets for {{ movie[1] }}</h1>
-        </header>
-
-        <div class="ticket-form">
-            <form method="POST">
-                <div class="input-group">
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" name="quantity" id="quantity" min="1" max="{{ movie[3] }}" required>
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Book Tickets for {{ showtime.title }}</h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <p><strong>Theater:</strong> {{ showtime.theater_name }}</p>
+                        <p><strong>Showtime:</strong> {{ showtime.showtime }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Available Seats:</strong> <span id="available-seats">{{ showtime.available_seats }}</span></p>
+                        <p><strong>Price per Ticket:</strong> $<span id="ticket-price">{{ "%.2f"|format(showtime.price) }}</span></p>
+                    </div>
                 </div>
-                <button type="submit" class="book-now-btn">Book Now</button>
-            </form>
 
-            <p><a href="/movies" class="back-link">Back to Movies</a></p>
+                <form method="POST" id="booking-form">
+                    <div class="mb-3">
+                        <label for="tickets" class="form-label">Number of Tickets</label>
+                        <input type="number" class="form-control" id="tickets" name="tickets" 
+                               min="1" max="{{ showtime.available_seats }}" value="1" required>
+                        <div class="form-text">Maximum {{ showtime.available_seats }} tickets available</div>
+                    </div>
+
+                    <div class="alert alert-info mt-3">
+                        <h5>Order Summary</h5>
+                        <p id="order-summary">1 ticket x ${{ "%.2f"|format(showtime.price) }} = ${{ "%.2f"|format(showtime.price) }}</p>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('movie_details', movie_id=showtime.movie_id) }}" class="btn btn-secondary me-md-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Continue to Checkout</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
+</div>
 
-    <footer>
-        <p>&copy; 2024 Theater Booking System | <a href="/terms">Terms & Conditions</a> | <a href="/privacy">Privacy Policy</a></p>
-    </footer>
-</body>
-</html>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ticketsInput = document.getElementById('tickets');
+    const availableSeats = parseInt(document.getElementById('available-seats').textContent);
+    const ticketPrice = parseFloat(document.getElementById('ticket-price').textContent);
+    const orderSummary = document.getElementById('order-summary');
+    
+    function updateOrderSummary() {
+        const numTickets = parseInt(ticketsInput.value) || 0;
+        const totalPrice = (ticketPrice * numTickets).toFixed(2);
+        orderSummary.textContent = `${numTickets} ticket${numTickets !== 1 ? 's' : ''} x $${ticketPrice.toFixed(2)} = $${totalPrice}`;
+    }
+    
+    ticketsInput.addEventListener('input', function() {
+        let numTickets = parseInt(this.value) || 0;
+        
+        // Validate input
+        if (numTickets < 1) {
+            numTickets = 1;
+            this.value = 1;
+        } else if (numTickets > availableSeats) {
+            numTickets = availableSeats;
+            this.value = availableSeats;
+            alert(`Only ${availableSeats} seats available!`);
+        }
+        
+        updateOrderSummary();
+    });
+    
+    // Initialize order summary
+    updateOrderSummary();
+});
+</script>
+{% endblock %}
