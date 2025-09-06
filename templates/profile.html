@@ -1,0 +1,322 @@
+<!-- templates/profile.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h2 text-primary h2-hero">My Profile</h1>
+                    <p class="text-muted mb-0 text-para">Welcome back, {{ user.username }}! Here's your booking history and account details.</p>
+                </div>
+                <div>
+                    <a href="{{ url_for('movies') }}" class="btn btn-primary">
+                        <i class="bi bi-film me-2"></i>Browse Movies
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- User Info Sidebar -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center p-4">
+                    <!-- User Avatar -->
+                    <div class="avatar-container mb-3">
+                        <div class="avatar-circle bg-primary text-white">
+                            {{ user.username[0]|upper }}
+                        </div>
+                    </div>
+                    
+                    <!-- User Info -->
+                    <h4 class="mb-1">{{ user.username }}</h4>
+                    <p class="text-muted mb-3">{{ user.email }}</p>
+                    
+                    <!-- Stats -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-6">
+                            <div class="stat-card">
+                                <div class="stat-number text-primary">{{ bookings|length }}</div>
+                                <div class="stat-label">Bookings</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="stat-card">
+                                <div class="stat-number text-success">${{ "%.2f"|format(bookings|sum(attribute='total_price')) }}</div>
+                                <div class="stat-label">Total Spent</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Details -->
+                    <div class="account-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Member Since:</span>
+                            <span class="detail-value">{{ user.created_at[:10] }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Status:</span>
+                            <span class="badge bg-success">Active</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats Card -->
+            <div class="card shadow-sm border-0 mt-3">
+                <div class="card-header bg-transparent">
+                    <h6 class="mb-0"><i class="bi bi-graph-up me-2"></i>Activity Overview</h6>
+                </div>
+                <div class="card-body">
+                    <div class="activity-item">
+                        <div class="activity-icon bg-primary">
+                            <i class="bi bi-ticket"></i>
+                        </div>
+                        <div class="activity-content">
+                            <span class="activity-text">Total Movies Watched</span>
+                            <span class="activity-number">5</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon bg-success">
+                            <i class="bi bi-star"></i>
+                        </div>
+                        <div class="activity-content">
+                            <span class="activity-text">Average Rating</span>
+                            <span class="activity-number">4.2/5</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon bg-info">
+                            <i class="bi bi-clock-history"></i>
+                        </div>
+                        <div class="activity-content">
+                            <span class="activity-text">Last Booking</span>
+                            <span class="activity-number">{{ bookings[0].showtime[:10] if bookings else 'Never' }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content - Booking History -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-transparent">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Booking History</h5>
+                        <span class="badge bg-primary rounded-pill">{{ bookings|length }}</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if bookings %}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Movie</th>
+                                    <th>Date & Time</th>
+                                    <th>Theater</th>
+                                    <th class="text-center">Tickets</th>
+                                    <th class="text-end">Amount</th>
+                                    <th class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in bookings %}
+                                <tr class="booking-row">
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="movie-poster-small me-3">
+                                                <i class="bi bi-film text-muted"></i>
+                                            </div>
+                                            <div>
+                                                <strong class="d-block">{{ booking.title }}</strong>
+                                                <small class="text-muted">{{ booking.showtime[:10] }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ booking.showtime[11:16] }}</td>
+                                    <td>{{ booking.theater_name }}</td>
+                                    <td class="text-center">{{ booking.num_tickets }}</td>
+                                    <td class="text-end">${{ "%.2f"|format(booking.total_price) }}</td>
+                                    <td class="text-center">
+                                        <span class="badge bg-{{ 'success' if booking.payment_status == 'completed' else 'warning' }} rounded-pill">
+                                            {{ booking.payment_status or 'confirmed' }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <!-- Empty State -->
+                    <div class="text-center py-5">
+                        <div class="empty-state-icon mb-3">
+                            <i class="bi bi-ticket-perforated text-muted" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="text-muted">No bookings yet</h5>
+                        <p class="text-muted mb-4">You haven't made any bookings yet. Start exploring our movie collection!</p>
+                        <a href="{{ url_for('movies') }}" class="btn btn-primary">
+                            <i class="bi bi-film me-2"></i>Browse Movies
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Upcoming Bookings Section -->
+            <div class="card shadow-sm border-0 mt-4">
+                <div class="card-header bg-transparent">
+                    <h5 class="mb-0"><i class="bi bi-calendar-event me-2"></i>Upcoming Bookings</h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center py-4">
+                        <i class="bi bi-calendar-x text-muted mb-3" style="font-size: 2rem;"></i>
+                        <p class="text-muted">No upcoming bookings</p>
+                        <a href="{{ url_for('movies') }}" class="btn btn-outline-primary btn-sm">
+                            Book a Movie
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.avatar-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.stat-card {
+    text-align: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.detail-value {
+    font-weight: 600;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    color: white;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-text {
+    display: block;
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.activity-number {
+    font-weight: 600;
+    color: #343a40;
+}
+
+.movie-poster-small {
+    width: 40px;
+    height: 40px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.booking-row:hover {
+    background-color: rgba(13, 110, 253, 0.04) !important;
+    transform: translateY(-1px);
+    transition: all 0.2s ease;
+}
+
+.empty-state-icon {
+    opacity: 0.5;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+}
+
+.shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+.table th {
+    border-top: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+}
+</style>
+{% endblock %}
