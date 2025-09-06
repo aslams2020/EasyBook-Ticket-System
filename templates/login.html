@@ -1,150 +1,153 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-         /* General Styles */
-         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2f2f2; /* Light background for login page */
-            color: #333;
-        }
+{% extends "base.html" %}
 
-        /* Main Content for Login */
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .login-box {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); */
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        .login-box h1 {
-            font-size: 32px;
-            color: #350149e5;
-            font-family: 'Roboto', sans-serif;
-            margin-bottom: 30px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .input-group label {
-            font-weight: bold;
-            font-size: 14px;
-            color: #350149e5;
-        }
-        .input-group input {
-            width: 90%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            margin-top: 5px;
-        }
-
-        .input-group input:focus {
-            border-color: #350149e5;
-            outline: none;
-        }
-
-        /* Button */
-        .login-btn {
-            background-color: #5b0089;
-            padding: 12px 30px;
-            color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 100%;
-            transition: 0.3s;
-        }
-
-        .login-btn:hover {
-            background-color: #7a00b7;
-            transform: scale(1.03);
-        }
-
-        /* Register Link */
-        .register-link {
-            margin-top: 20px;
-            font-size: 16px;
-            color: #350149e5;
-        }
-
-        .register-link a {
-            color: #350149e5;
-            text-decoration: none;
-        }
-
-        .register-link a:hover {
-            text-decoration: underline;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 5px;
-            background-color: #2e2e2e;
-            color: #fff;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-            font-size: 15px;
-        }
-
-        footer a {
-            color: white;
-            text-decoration: none;
-            margin-left: 5px;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="login-box">
-            <h1>Login</h1>
-            <form method="POST">
-                <div class="input-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
+{% block content %}
+<div class="container-fluid py-5">
+    <div class="row justify-content-center align-items-center min-vh-80">
+        <div class="col-lg-5 col-md-7 col-sm-9">
+            <div class="card auth-card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h2 class="mb-0"><i class="bi bi-ticket-perforated me-2"></i>EasyBook Login</h2>
+                    <p class="mb-0 mt-2 opacity-75">Welcome back! Please sign in to continue</p>
                 </div>
-                <div class="input-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
+                <div class="card-body p-5">
+                    <form method="POST" action="{{ url_for('login') }}" class="needs-validation" novalidate>
+                        <div class="mb-4">
+                            <label for="username" class="form-label fw-semibold">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-person text-primary"></i>
+                                </span>
+                                <input type="text" class="form-control ps-3 border-start-0" id="username"
+                                    name="username" placeholder="Enter your username" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-semibold">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-lock text-primary"></i>
+                                </span>
+                                <input type="password" class="form-control ps-3 border-start-0" id="password"
+                                    name="password" placeholder="Enter your password" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <button type="submit" class="btn btn-primary btn-lg w-100 py-3 fw-semibold signin">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                            </button>
+                        </div>
+
+                        <div class="text-center">
+                            <p class="mb-0 text-muted">Don't have an account?
+                                <a href="{{ url_for('register') }}"
+                                    class="text-primary fw-semibold text-decoration-none">Create one here</a>
+                            </p>
+                        </div>
+                    </form>
                 </div>
-                <button type="submit" class="login-btn">Login</button>
-            </form>
-            <p class="register-link">
-                <a href="/register">Don't have an account? Register here</a>
-            </p>
+            </div>
         </div>
     </div>
+</div>
 
-    <footer>
-        <p>&copy; 2024 Theater Booking System | <a href="/terms">Terms & Conditions</a> | <a href="/privacy">Privacy Policy</a></p>
-    </footer>
-</body>
-</html>
+<style>
+    .min-vh-80 {
+        min-height: 80vh;
+    }
+
+    .auth-card {
+        border-radius: 20px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .auth-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+    }
+    .auth-card .card-header {
+        border-radius: 0 !important;
+        background-color: #1e077a !important;
+    }
+
+    .auth-card .form-#control  {
+        border-radius: 10px;
+        padding: 15px 20px;
+        font-size: 1rem;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+
+    .auth-card .form-control:focus {
+        border-color: #1e077a;
+        box-shadow: 0 0 0 0.2rem rgba(159, 177, 255, 0.575);
+    }
+
+    .auth-card .input-group-text {
+        border-radius: 10px 0 0 10px;
+        border: 2px solid #e9ecef;
+        border-right: none;
+        background: #f8f9fa;
+    }
+
+    .auth-card .btn {
+        border-radius: 12px;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+    }
+
+    .auth-card .btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .signin {
+        background-color: #1e077a !important;
+    }
+
+    body {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.297)),
+        url("{{ url_for('static', filename='images/bgimg.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+
+    .container-fluid {
+        background: transparent;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .auth-card {
+            margin: 1rem;
+        }
+
+        .card-body {
+            padding: 2rem !important;
+        }
+    }
+</style>
+
+<script>
+    // Basic form validation
+    document.addEventListener('DOMContentLoaded', function () {
+        const forms = document.querySelectorAll('.needs-validation');
+
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    });
+</script>
+
+{% endblock %}
