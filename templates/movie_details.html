@@ -1,0 +1,45 @@
+<!-- templates/movie_details.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster" class="img-fluid rounded">
+    </div>
+    <div class="col-md-8">
+        <h1 class="h2-hero">{{ movie.title }}</h1>
+        <p class="text-para text-muted">{{ movie.genre }} | {{ movie.duration }} minutes</p>
+        <p class="text-para">{{ movie.description }}</p>
+        <p class="text-para" ><strong>Release Date:</strong> {{ movie.release_date }}</p>
+    </div>
+</div>
+
+<hr>
+
+<h3 class="h2-hero">Available Showtimes</h3>
+{% if showtimes %}
+    <div class="row">
+        {% for showtime in showtimes %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ showtime.theater_name }}</h5>
+                    <p class="card-text">
+                        <strong>Time:</strong> {{ showtime.showtime }}<br>
+                        <strong>Seats Available:</strong> {{ showtime.available_seats }}<br>
+                        <strong>Price:</strong> ${{ "%.2f"|format(showtime.price) }}
+                    </p>
+                    <a href="{{ url_for('book_ticket', showtime_id=showtime.id) }}" class="btn btn-primary">Book Now</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        No showtimes available for this movie.
+    </div>
+{% endif %}
+
+<a href="{{ url_for('movies') }}" class="btn btn-secondary mt-3">Back to Movies</a>
+{% endblock %}
