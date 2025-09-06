@@ -1,149 +1,197 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        /* General Styles */
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f2f2f2; /* Matching the background color from login */
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
+{% extends "base.html" %}
 
-        /* Main Content for Register */
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .register-box {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        .register-box h1 {
-            font-size: 32px;
-            color: #350149e5; /* Matching the heading color from login */
-            font-family: 'Roboto', sans-serif;
-            margin-bottom: 30px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .input-group label {
-            font-weight: bold;
-            font-size: 14px;
-            color: #350149e5; /* Matching the label color from login */
-        }
-
-        .input-group input {
-            width: 90%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            margin-top: 5px;
-        }
-
-        .input-group input:focus {
-            border-color: #350149e5; /* Matching focus color from login */
-            outline: none;
-        }
-
-        /* Register Button */
-        .register-btn {
-            background-color: #5b0089;
-            padding: 12px 30px;
-            color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 100%;
-            transition: 0.3s;
-        }
-
-        .register-btn:hover {
-            background-color: #7a00b7;
-            transform: scale(1.03);
-        }
-
-        /* Login Link */
-        .login-link {
-            margin-top: 20px;
-            font-size: 16px;
-        }
-
-        .login-link a {
-            color: #350149e5;
-            text-decoration: none;
-        }
-
-        .login-link a:hover {
-            text-decoration: underline;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 5px;
-            background-color: #2e2e2e;
-            color: #fff;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-            font-size: 15px;
-        }
-
-        footer a {
-            color: white;
-            text-decoration: none;
-            margin-left: 5px;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="register-box">
-            <h1>Register</h1>
-            <form method="POST">
-                <div class="input-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
+{% block content %}
+<div class="container-fluid py-5">
+    <div class="row justify-content-center align-items-center min-vh-80">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <div class="card auth-card shadow-lg border-0">
+                <div class="card-header bg-success text-white text-center py-4">
+                    <h2 class="mb-0"><i class="bi bi-person-plus me-2"></i>Create Account</h2>
+                    <p class="mb-0 mt-2 opacity-75">Join us and start booking movies today!</p>
                 </div>
-                <div class="input-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
+                <div class="card-body p-5">
+                    <form method="POST" class="needs-validation" novalidate>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="username" class="form-label fw-semibold">Username</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="bi bi-person text-primary"></i>
+                                    </span>
+                                    <input type="text" class="form-control" id="username" name="username" 
+                                           placeholder="Choose username" required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <label for="email" class="form-label fw-semibold">Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="bi bi-envelope text-primary"></i>
+                                    </span>
+                                    <input type="email" class="form-control" id="email" name="email" 
+                                           placeholder="your@email.com" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="password" class="form-label fw-semibold">Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="bi bi-lock text-primary"></i>
+                                    </span>
+                                    <input type="password" class="form-control" id="password" name="password" 
+                                           placeholder="Create password" required minlength="6">
+                                </div>
+                                <div class="form-text">Minimum 6 characters</div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <label for="confirm_password" class="form-label fw-semibold">Confirm Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="bi bi-shield-lock text-primary"></i>
+                                    </span>
+                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" 
+                                           placeholder="Confirm password" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="role" class="form-label fw-semibold">Account Type</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="bi bi-person-badge text-primary"></i>
+                                </span>
+                                <select class="form-select" id="role" name="role" required>
+                                    <option value="">Select account type</option>
+                                    <option value="user">🎬 Movie Lover (User)</option>
+                                    <option value="admin">⚡ System Administrator</option>
+                                </select>
+                            </div>
+                            <div class="form-text text-muted mt-2">
+                                <i class="bi bi-info-circle"></i> Admin accounts require special permissions
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <button type="submit" class="btn btn-success btn-lg w-100 py-3 fw-semibold">
+                                <i class="bi bi-person-plus me-2"></i>Create Account
+                            </button>
+                        </div>
+                        
+                        <div class="text-center">
+                            <p class="mb-0 text-muted">Already have an account? 
+                                <a href="{{ url_for('login') }}" class="text-success fw-semibold text-decoration-none">Sign in here</a>
+                            </p>
+                        </div>
+                    </form>
                 </div>
-                <button type="submit" class="register-btn">Register</button>
-            </form>
-            <p class="login-link">
-                <a href="/login">Already have an account? Login here</a>
-            </p>
+            </div>
         </div>
     </div>
+</div>
 
-    <footer>
-        <p>&copy; 2024 Theater Booking System | <a href="/terms">Terms & Conditions</a> | <a href="/privacy">Privacy Policy</a></p>
-    </footer>
-</body>
-</html>
+<style>
+/* Reuse the same styles from login page */
+.min-vh-80 {
+    min-height: 80vh;
+}
+
+.auth-card {
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auth-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+.auth-card .form-control,
+.auth-card .form-select {
+    border-radius: 10px;
+    padding: 15px 20px;
+    font-size: 1rem;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.auth-card .form-control:focus,
+.auth-card .form-select:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+.auth-card .input-group-text {
+    border-radius: 10px 0 0 10px;
+    border: 2px solid #e9ecef;
+    border-right: none;
+    background: #f8f9fa;
+}
+
+.auth-card .btn {
+    border-radius: 12px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.auth-card .btn:hover {
+    transform: translateY(-2px);
+}
+
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+    .auth-card {
+        margin: 1rem;
+    }
+    
+    .card-body {
+        padding: 2rem !important;
+    }
+    
+    .row > div {
+        margin-bottom: 1rem;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Form validation
+    const forms = document.querySelectorAll('.needs-validation');
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+
+    // Password confirmation validation
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirm_password');
+
+    function validatePassword() {
+        if (password.value !== confirmPassword.value) {
+            confirmPassword.setCustomValidity("Passwords don't match");
+        } else {
+            confirmPassword.setCustomValidity('');
+        }
+    }
+
+    password.addEventListener('change', validatePassword);
+    confirmPassword.addEventListener('keyup', validatePassword);
+});
+</script>
+{% endblock %}
