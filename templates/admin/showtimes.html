@@ -1,0 +1,44 @@
+<!-- templates/admin/showtimes.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Manage Showtimes</h1>
+    <div>
+        <a href="{{ url_for('admin_add_showtime') }}" class="btn btn-primary">Add New Showtime</a>
+<a href="{{ url_for('profile') }}" class="btn btn-secondary">Back to Admin Panel</a>    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Movie</th>
+                        <th>Theater</th>
+                        <th>Showtime</th>
+                        <th>Available Seats</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for showtime in showtimes %}
+                    <tr>
+                        <td>{{ showtime.movie_title }}</td>
+                        <td>{{ showtime.theater_name }}</td>
+                        <td>{{ showtime.showtime }}</td>
+                        <td>{{ showtime.available_seats }}</td>
+                        <td>${{ "%.2f"|format(showtime.price) }}</td>
+                        <td>
+                            <a href="{{ url_for('admin_delete_showtime', showtime_id=showtime.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this showtime?')">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
