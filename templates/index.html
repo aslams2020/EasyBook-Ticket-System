@@ -9,7 +9,9 @@
 </div>
 
 <h2 class="mb-4 h2-hero">Featured Movies</h2>
-
+<div class="text-center mt-4">
+    <a href="{{ url_for('movies') }}" class="btn btn-outline-primary viewbtn">View All Movies</a>
+</div>
 <div class="row">
     {% for movie in movies %}
     <div class="col-md-3 mb-4">
@@ -27,7 +29,17 @@
     {% endfor %}
 </div>
 
-<div class="text-center mt-4">
-    <a href="{{ url_for('movies') }}" class="btn btn-outline-primary">View All Movies</a>
-</div>
+<style>
+
+    .viewbtn {
+        text-align: right !important;
+        color: white !important;
+        border: 2px solid white;
+        position: absolute !important;
+        right: 50px !important;
+        top: 470px !important;
+    }
+</style>
+
+
 {% endblock %}
