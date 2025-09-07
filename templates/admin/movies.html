@@ -40,9 +40,10 @@
                         <td>
                             <a href="{{ url_for('admin_edit_movie', movie_id=movie.id) }}"
                                 class="btn btn-sm btn-primary">Edit</a>
-                            <a href="{{ url_for('admin_delete_movie', movie_id=movie.id) }}"
-                                class="btn btn-sm btn-danger"
-                                onclick="return confirm('Are you sure you want to delete this movie?')">Delete</a>
+                            <a href="{{ url_for('admin_confirm_delete_movie', movie_id=movie.id) }}"
+                                class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash me-1"></i>Delete
+                            </a>
                         </td>
                     </tr>
                     {% endfor %}
