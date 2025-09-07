@@ -107,6 +107,10 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.auth-card .card-header {
+        border-radius: 0 !important;
+        background-color: #1e077a !important;
+    }
 .auth-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
@@ -123,8 +127,8 @@
 
 .auth-card .form-control:focus,
 .auth-card .form-select:focus {
-    border-color: #28a745;
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    border-color: #4c28a7;
+    box-shadow: 0 0 0 0.2rem rgba(93, 40, 167, 0.25);
 }
 
 .auth-card .input-group-text {
@@ -138,16 +142,27 @@
     border-radius: 12px;
     font-size: 1.1rem;
     transition: all 0.3s ease;
+    background-color: #1e077a !important;
 }
 
 .auth-card .btn:hover {
     transform: translateY(-2px);
+    background-color: #320ec2 !important;
+}
+
+.text-success {
+    color: #320ec2 !important;
 }
 
 body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-}
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.297)),
+        url("{{ url_for('static', filename='images/bgimg.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
 @media (max-width: 768px) {
     .auth-card {
