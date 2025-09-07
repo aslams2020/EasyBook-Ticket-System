@@ -17,7 +17,7 @@ def get_db_connection():
 @app.route('/')
 def index():
     conn = get_db_connection()
-    movies = conn.execute('SELECT * FROM movies WHERE is_active = 1').fetchall()
+    movies = conn.execute('SELECT * FROM movies WHERE is_active = 1 ORDER BY id DESC').fetchall()
     conn.close()
     return render_template('index.html', movies=movies)
 
@@ -303,7 +303,8 @@ def admin_movies():
         flash('You do not have permission to access this page.', 'error')
         return redirect(url_for('index'))
     
-    movies = conn.execute('SELECT * FROM movies ORDER BY title').fetchall()
+    # Order by id descending to show newest first
+    movies = conn.execute('SELECT * FROM movies ORDER BY id DESC').fetchall()
     conn.close()
     
     return render_template('admin/movies.html', movies=movies)
@@ -411,9 +412,6 @@ def admin_delete_showtime(showtime_id):
     
     flash('Showtime deleted successfully!', 'success')
     return redirect(url_for('admin_showtimes'))
-
-
-# Admin showtimes management
 
 # Admin bookings management
 @app.route('/admin/bookings')
@@ -577,6 +575,15 @@ def admin_edit_movie(movie_id):
     conn.close()
     return render_template('admin/edit_movie.html', movie=movie)
 
+
+@app.route('/movies')
+def movies():
+    conn = get_db_connection()
+    # Order by id descending to show newest first
+    movies = conn.execute('SELECT * FROM movies WHERE is_active = 1 ORDER BY id DESC').fetchall()
+    conn.close()
+    return render_template('movies.html', movies=movies)
+
 @app.route('/admin/movies/delete/<int:movie_id>')
 def admin_delete_movie(movie_id):
     if 'user_id' not in session:
@@ -592,22 +599,90 @@ def admin_delete_movie(movie_id):
         flash('You do not have permission to access this page.', 'error')
         return redirect(url_for('index'))
     
-    # Check if there are any showtimes for this movie
+    try:
+        # First, delete all showtimes associated with this movie
+        conn.execute('DELETE FROM showtimes WHERE movie_id = ?', (movie_id,))
+        
+        # Then delete the movie
+        conn.execute('DELETE FROM movies WHERE id = ?', (movie_id,))
+        
+        conn.commit()
+        flash('Movie and associated showtimes deleted successfully!', 'success')
+        
+    except sqlite3.Error as e:
+        conn.rollback()
+        flash('Error deleting movie: ' + str(e), 'error')
+        print(f"Delete error: {e}")
+    
+    finally:
+        conn.close()
+    
+    return redirect(url_for('admin_movies'))
+
+    
+# app.py - Add a confirmation route
+@app.route('/admin/movies/delete/<int:movie_id>/confirm')
+def admin_confirm_delete_movie(movie_id):
+    if 'user_id' not in session:
+        flash('Please log in to access admin panel.', 'error')
+        return redirect(url_for('login'))
+    
+    conn = get_db_connection()
+    user = conn.execute(
+        'SELECT is_admin FROM users WHERE id = ?', (session['user_id'],)
+    ).fetchone()
+    
+    if not user or not user['is_admin']:
+        flash('You do not have permission to access this page.', 'error')
+        return redirect(url_for('index'))
+    
+    # Get movie details and associated showtimes
+    movie = conn.execute('SELECT * FROM movies WHERE id = ?', (movie_id,)).fetchone()
     showtimes = conn.execute(
         'SELECT COUNT(*) as count FROM showtimes WHERE movie_id = ?', (movie_id,)
     ).fetchone()
     
-    if showtimes['count'] > 0:
-        flash('Cannot delete movie with existing showtimes!', 'error')
-        return redirect(url_for('admin_movies'))
-    
-    conn.execute('DELETE FROM movies WHERE id = ?', (movie_id,))
-    conn.commit()
     conn.close()
     
-    flash('Movie deleted successfully!', 'success')
-    return redirect(url_for('admin_movies'))
+    return render_template('admin/confirm_delete_movie.html', 
+                         movie=movie, 
+                         showtimes_count=showtimes['count'])
 
+# Then update the delete route to handle the actual deletion
+@app.route('/admin/movies/delete/<int:movie_id>/execute')
+def admin_execute_delete_movie(movie_id):
+    if 'user_id' not in session:
+        flash('Please log in to access admin panel.', 'error')
+        return redirect(url_for('login'))
+    
+    conn = get_db_connection()
+    user = conn.execute(
+        'SELECT is_admin FROM users WHERE id = ?', (session['user_id'],)
+    ).fetchone()
+    
+    if not user or not user['is_admin']:
+        flash('You do not have permission to access this page.', 'error')
+        return redirect(url_for('index'))
+    
+    try:
+        # Delete associated showtimes first
+        conn.execute('DELETE FROM showtimes WHERE movie_id = ?', (movie_id,))
+        
+        # Then delete the movie
+        conn.execute('DELETE FROM movies WHERE id = ?', (movie_id,))
+        
+        conn.commit()
+        flash('Movie and all associated showtimes deleted successfully!', 'success')
+        
+    except sqlite3.Error as e:
+        conn.rollback()
+        flash('Error deleting movie: ' + str(e), 'error')
+        print(f"Delete error: {e}")
+    
+    finally:
+        conn.close()
+    
+    return redirect(url_for('admin_movies'))
 
 # Admin users management
 @app.route('/admin/users')
@@ -665,13 +740,6 @@ def admin_toggle_admin(user_id):
     conn.close()
     return redirect(url_for('admin_users'))
 
-# Movies listing
-@app.route('/movies')
-def movies():
-    conn = get_db_connection()
-    movies = conn.execute('SELECT * FROM movies WHERE is_active = 1').fetchall()
-    conn.close()
-    return render_template('movies.html', movies=movies)
 
 # Movie details and showtimes
 @app.route('/movie/<int:movie_id>')
