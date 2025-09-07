@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-danger text-white text-center py-4">
+                    <h3><i class="bi bi-exclamation-triangle me-2"></i>Confirm Deletion</h3>
+                </div>
+                <div class="card-body p-5 text-center">
+                    <div class="mb-4">
+                        <i class="bi bi-trash text-danger" style="font-size: 3rem;"></i>
+                    </div>
+                    
+                    <h4>Are you sure you want to delete this movie?</h4>
+                    
+                    <div class="alert alert-info mt-4">
+                        <h5>{{ movie.title }}</h5>
+                        <p class="mb-1"><strong>Genre:</strong> {{ movie.genre }}</p>
+                        <p class="mb-1"><strong>Duration:</strong> {{ movie.duration }} minutes</p>
+                        {% if showtimes_count > 0 %}
+                        <div class="alert alert-warning mt-3">
+                            <i class="bi bi-warning"></i>
+                            This movie has <strong>{{ showtimes_count }}</strong> associated showtimes that will also be deleted!
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-flex justify-content-center gap-3 mt-4">
+                        <a href="{{ url_for('admin_movies') }}" class="btn btn-secondary btn-lg">
+                            <i class="bi bi-arrow-left me-2"></i>Cancel
+                        </a>
+                        <a href="{{ url_for('admin_execute_delete_movie', movie_id=movie.id) }}" 
+                           class="btn btn-danger btn-lg" onclick="showDeleting()">
+                            <i class="bi bi-trash me-2"></i>Yes, Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showDeleting() {
+    // Show a loading indicator
+    const btn = event.target;
+    btn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Deleting...';
+    btn.disabled = true;
+}
+</script>
+{% endblock %}
